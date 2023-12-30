@@ -57,7 +57,7 @@ Our pre-processing pipeline for the regression task consists of the following st
 
 We use the following models for the regression task:
 
-- Linear Regression (no and polynomial features)
+- Linear Regression (with and without polynomial features)
 - Decision Trees
 - Random Forests
 - Support Vector Regressions (with and without kernel trick)
@@ -89,7 +89,7 @@ Our pre-processing pipeline for the classification task consists of the followin
 
 We use the following models for the classification task:
 
-- Logistic Regression (no and polynomial features)
+- Logistic Regression (with and without polynomial features)
 - Support Vector Classifiers (with and without kernel trick)
 - Random Forest
 
@@ -106,7 +106,7 @@ Lastly, we have a look at the confusion matrix of the Random Forest on the test 
 \begin{center}
 \begin{tabular}{lrrrr}
 \toprule
- &  precision &  recall &  f1-score & total \\
+Pred &  precision &  recall &  f1-score & total \\
 \midrule
 Diabetes & 0.84 & 0.40 & 0.54 & 115 \\
 No Diabetes & 0.95 & 0.99 & 0.97 & 1242 \\
@@ -117,7 +117,7 @@ weighted avg & 0.94 & 0.94 & 0.93 & 1357 \\
 \end{tabular}
 \end{center}
 
-No diabetes is predicted correctly most of the time, which is easy to achieve given the class imbalance. Diabetes is predicted correctly 84% of the time (46 out of 46+9 true cases), however the model suffers from a low recall of 40%. This means we get many false positives (46 cases are truely diabetes from the predicted 46+69=95 cases), which probably is not ideal for a medical diagnosis algorithm. 
+No diabetes is predicted correctly most of the time, which is easy to achieve given the class imbalance. Diabetes is predicted correctly 84% of the time (46 out of 46+9=54 true diabetes cases), however the model suffers from a low recall of 40%. This means we get many false positives (46 cases are truely diabetes from the predicted 46+69=115 cases), which probably is not ideal for a medical diagnosis algorithm. 
 
 \begin{center}
 \includegraphics[width=0.75\linewidth]{assets/confusion_matrix.png}
