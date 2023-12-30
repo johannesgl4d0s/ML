@@ -13,10 +13,31 @@ Our first step was to explore the data, e.g. shape of the data, column types, mi
 \includegraphics[width=0.75\linewidth]{assets/cardinality.png}
 \end{center}
 
-Next, we have a look at the missing values. 26 columns have at least 4000 missing values, which is 50% of the data. Usually, we would impute missing values with the median or mean, however with so many missing values, this would lead to a lot of bias. Instead, we drop all columns with more than 1500 missing values. This leaves us with 28 columns.
+Next, we have a look at the missing values. 26 columns have at least 4000 missing values, which is 50% of the data. Usually, we would impute missing values with the median or mean, however with so many missing values, this would lead to a lot of bias. Instead, we drop all columns with more than 1500 missing values. This leaves us with 28 columns. Afterwards, we remove all rows with missing values in the target variable.
+
+This is the final dataset:
 
 \begin{center}
-\includegraphics[width=0.75\linewidth]{assets/top30na.png}
+\begin{tabular}{rlrl|rlrl}
+\toprule 
+N & Column & Non-Null & Dtype & N & Column & Non-Null & Dtype \\
+\midrule
+ 0   & NR           & 6782 &   int64   &  14  & Pulse        & 6414 &   float64 \\
+ 1   & Gender       & 6782 &   object    & 15  & BPSysAve     & 6404 &   float64 \\
+ 2   & Age          & 6782 &   int64     & 16  & BPDiaAve     & 6404 &   float64 \\
+ 3   & AgeDecade    & 6540 &   object    & 17  & BPSys1       & 6154 &   float64 \\
+ 4   & Race1        & 6782 &   object    & 18  & BPDia1       & 6154 &   float64 \\
+ 5   & HHIncome     & 6252 &   object    & 19  & BPSys2       & 6262 &   float64 \\
+ 6   & HHIncomeMid  & 6252 &   float64   & 20  & BPDia2       & 6262 &   float64 \\
+ 7   & Poverty      & 6310 &   float64   & 21  & BPSys3       & 6268 &   float64 \\
+ 8   & HomeRooms    & 6733 &   float64   & 22  & BPDia3       & 6268 &   float64 \\
+ 9   & HomeOwn      & 6735 &   object    & 23  & DirectChol   & 6782 &   float64 \\
+ 10  & Weight       & 6731 &   float64   & 24  & UrineVol1    & 6729 &   float64 \\
+ 11  & Height       & 6737 &   float64   & 25  & UrineFlow1   & 6305 &   float64 \\
+ 12  & BMI          & 6727 &   float64   & 26  & Diabetes     & 6782 &   object  \\
+ 13  & BMI\_WHO      & 6705 &   object   &  27  & PhysActive   & 6284 &   object \\
+\bottomrule
+\end{tabular}
 \end{center}
 
 
@@ -48,6 +69,8 @@ Models that have adjustable hyperparameters are trained using 5-fold cross-valid
 \end{center}
 
 The best model is the Random Forest with an RMSE of about 0.30. Interestingly, the linear regression models perform second best, indicating that the relationship between the features and the target variable is approximately linear and that data is more important than model choice. The worst model is the linear support vector regression, though the SVR with the kernel trick still performs worse than the linear regression models.
+
+
 
 ## Classification
 The target variable `Diabetes` for the classification has the following distribution:
@@ -81,7 +104,21 @@ The best model is again the Random Forest with an F1 score of close to 1. This t
 Lastly, we have a look at the confusion matrix of the Random Forest on the test set:
 
 \begin{center}
-\includegraphics[width=0.5\linewidth]{assets/confusion_matrix.png}
+\begin{tabular}{lrrrr}
+\toprule
+ &  precision &  recall &  f1-score & total \\
+\midrule
+Diabetes & 0.84 & 0.40 & 0.54 & 115 \\
+No Diabetes & 0.95 & 0.99 & 0.97 & 1242 \\
+accuracy &  &  & 0.94 & 1357 \\
+macro avg & 0.89 & 0.70 & 0.76 & 1357 \\
+weighted avg & 0.94 & 0.94 & 0.93 & 1357 \\
+\bottomrule
+\end{tabular}
 \end{center}
 
-No diabetes `=1` is predicted correctly most of the time, which is easy to achieve given the class imbalance. Diabetes is predicted correctly 80% of the time (33 out of 33+8 true cases), however the model suffers from a low recall of 39%. This means we get many false positives (33 cases are truely diabetes from the predicted 33+52=85 cases), which is not ideal for a medical diagnosis. 
+No diabetes is predicted correctly most of the time, which is easy to achieve given the class imbalance. Diabetes is predicted correctly 84% of the time (46 out of 46+9 true cases), however the model suffers from a low recall of 40%. This means we get many false positives (46 cases are truely diabetes from the predicted 46+69=95 cases), which probably is not ideal for a medical diagnosis algorithm. 
+
+\begin{center}
+\includegraphics[width=0.75\linewidth]{assets/confusion_matrix.png}
+\end{center}
